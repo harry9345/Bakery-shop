@@ -1,0 +1,114 @@
+<div class="container">
+  <h2 class="mb-4">Employees</h2>
+  <table class="table table-hover table-bordered table-sortable">
+    <caption>
+      Our Employee List
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <!-- TODO: Add a column for an avatar -->
+        <th scope="col">Avatar</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Display the employee list in the table -->
+      <tr *ngFor="let item of employee">
+        <!-- Making the first column bold -->
+        <td class="bold">{{ item.id }}</td>
+        <td>{{ item.first_name }}</td>
+        <td>{{ item.email }}</td>
+        <td>
+          <img [src]="item.avatar" alt="" style="border-radius: 100px" />
+        </td>
+        <td>
+          <!-- Delete an employee from the table -->
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteEmployee(item.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      <!-- Using form for adding an employee with validation -->
+      <tr class="input-row" [formGroup]="form">
+        <td>
+          <input
+            formControlName="id"
+            type="text"
+            placeholder="ID"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.id.errors }"
+          />
+          <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+            <div *ngIf="f.id.errors.required">ID is required</div>
+          </div>
+        </td>
+
+        <td>
+          <input
+            formControlName="first_name"
+            type="text"
+            placeholder="Name"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.first_name.errors }"
+          />
+          <div
+            *ngIf="submitted && f.first_name.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f.first_name.errors.required">
+              First Name is required
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <input
+            formControlName="email"
+            type="email"
+            placeholder="Email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+          />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="f.email.errors.email">
+              Email must be a valid email address
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <input
+            formControlName="avatar"
+            placeholder="Avatar"
+            class="form-control"
+            type="url"
+            [ngClass]="{ 'is-invalid': submitted && f.avatar.errors }"
+          />
+          <div *ngIf="submitted && f.avatar.errors" class="invalid-feedback">
+            <div *ngIf="f.avatar.errors.required">Avatar is required.</div>
+            <div *ngIf="f.avatar.errors.pattern">Please enter valid url.</div>
+          </div>
+        </td>
+
+        <td>
+          <button
+            type="submit"
+            class="btn btn-success form-control"
+            style="width: 70px"
+            (click)="addEmployee()"
+          >
+            Add
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
